@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import ReactDOM from 'react-dom';
+import NumberFormat from 'react-number-format';
 import axios from 'axios';
 import Time from 'react-time-format'
 import './bootstrap/css/bootstrap.min.css';
@@ -34,7 +35,7 @@ export default class TableRealTime extends Component {
                             <td><Time value={block.block_time} format="hh:mm:ss"/> s</td>
                             <td>{block.adjust} s</td>
                             <td>{Math.floor(block.time_ago/1000)}s</td>
-                            <td>{block.diff.toString()}</td>
+                            <td><NumberFormat thousandSeparator={true} displayType='text' value={block.diff}/> </td>
                             <td>{block.miner.toString()}</td>
                         </tr>
                     )}
@@ -48,12 +49,12 @@ export default class TableRealTime extends Component {
         let blockData = await this.getBlockFromApi();
         let _blocks = await this.getBlockFromApi();
         this.blocks=this.blocks.length?this.blocks:_blocks;
-        console.log(this.blocks.length);
+        // console.log(this.blocks.length);
         
         let isNewBlock = this.blocks.length==0 || (_blocks[0].height !== (this.blocks[0].height || 0));
         if(typeof this.blocks[0]!=='undefined'){
-        console.log('old block: ' + this.blocks[0].height);
-        console.log('new block: '+ _blocks[0].height);
+        // console.log('old block: ' + this.blocks[0].height);
+        // console.log('new block: '+ _blocks[0].height);
         }
         let now = Date.now();
         if(isNewBlock){
@@ -70,7 +71,7 @@ export default class TableRealTime extends Component {
     }
 
     start(timeUpdate) {
-        // this.getBlocks();
+        this.getBlocks();
         // this.getBlockRpc();
         setInterval(() => {
             this.getBlocks();
